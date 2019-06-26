@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FxDeal File Uploading</title>
+</head>
+<body>
+<p>Welcome to <span th:text="${name}">Our App</span></p>
+
+<form method="post" enctype="multipart/form-data" action="/upload" >
+    <table>
+        <tr>
+            <td>File to upload : </td>
+            <td><input type="file" name="fxfile" /></td>
+            <td></td>
+        </tr>
+        <tr></tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Upload File" /></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>
