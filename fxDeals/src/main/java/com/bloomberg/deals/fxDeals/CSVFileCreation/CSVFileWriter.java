@@ -3,6 +3,7 @@ package com.bloomberg.deals.fxDeals.CSVFileCreation;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class CSVFileWriter {
     private static final char DEFAULT_SEPARATOR = ',';
@@ -13,14 +14,14 @@ public class CSVFileWriter {
 
         CSVUtils.writeLine(writer, Arrays.asList("Deal Unique Id", "Ordering Currency ISO Code", "To Currency ISO Code", "Timestamp", "Deal Amount Ordering Currency"), DEFAULT_SEPARATOR, ' ');
 
-        for (int i = 1; i < 1000; i++) {
-            if (i % 31 == 0) {
+        for (int i = 1; i < 100000; i++) {
+            if (i >= 0 && i <= 10500) {
                 CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("INR").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "40"), DEFAULT_SEPARATOR, ' ');
-            } else if (i % 42 == 0) {
+            } else if (i >= 10501 && i <= 35000) {
                 CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("RUB").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "55"), DEFAULT_SEPARATOR, ' ');
-            } else if (i % 62 == 0) {
+            } else if (i >= 35001 && i <= 57000) {
                 CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("CNY").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "70"), DEFAULT_SEPARATOR, ' ');
-            } else if (i % 105 == 0) {
+            } else if (i >= 57001 && i <= 83000) {
                 CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("GBP").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "65"), DEFAULT_SEPARATOR, ' ');
             } else {
                 CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("LKR").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "65"), DEFAULT_SEPARATOR, ' ');
@@ -28,6 +29,7 @@ public class CSVFileWriter {
         }
         writer.flush();
         writer.close();
+
     }
 
 }
