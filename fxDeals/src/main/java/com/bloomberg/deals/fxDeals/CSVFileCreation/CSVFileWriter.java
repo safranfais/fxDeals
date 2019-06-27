@@ -15,7 +15,9 @@ public class CSVFileWriter {
         CSVUtils.writeLine(writer, Arrays.asList("Deal Unique Id", "Ordering Currency ISO Code", "To Currency ISO Code", "Timestamp", "Deal Amount Ordering Currency"), DEFAULT_SEPARATOR, ' ');
 
         for (int i = 1; i < 100000; i++) {
-            if (i >= 0 && i <= 10500) {
+            if(i%100==0){
+                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, "$", "", "error date", ""), DEFAULT_SEPARATOR, ' ');
+            }else if (i >= 0 && i <= 10500) {
                 CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("INR").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "40"), DEFAULT_SEPARATOR, ' ');
             } else if (i >= 10501 && i <= 35000) {
                 CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("RUB").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "55"), DEFAULT_SEPARATOR, ' ');

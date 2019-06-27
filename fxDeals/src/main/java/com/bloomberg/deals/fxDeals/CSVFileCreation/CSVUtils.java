@@ -1,5 +1,7 @@
 package com.bloomberg.deals.fxDeals.CSVFileCreation;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
@@ -37,6 +39,9 @@ public class CSVUtils {
             result = result.replace("\"", "\"\"");
         }
         return result;
+    }
 
+    public static String fileType(MultipartFile fileName) {
+        return fileName.getOriginalFilename().substring(fileName.getOriginalFilename().lastIndexOf(".") + 1).toString();
     }
 }

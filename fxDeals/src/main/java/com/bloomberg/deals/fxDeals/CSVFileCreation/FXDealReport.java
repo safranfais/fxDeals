@@ -8,6 +8,14 @@ public class FXDealReport {
     private String timestamp;
     private String deal_amount;
 
+    public FXDealReport(String deal_unique_id, String ordering_currency_iso_code, String to_currency_iso_code, String timestamp, String deal_amount) {
+        this.deal_unique_id = deal_unique_id;
+        this.ordering_currency_iso_code = ordering_currency_iso_code;
+        this.to_currency_iso_code = to_currency_iso_code;
+        this.timestamp = timestamp;
+        this.deal_amount = deal_amount;
+    }
+
     public String getDeal_unique_id() {
         return deal_unique_id;
     }
