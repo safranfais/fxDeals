@@ -1,6 +1,6 @@
-package com.bloomberg.deals.fxDeals.CSVFileCreation;
+package com.bloomberg.deals.fxDeals.models;
 
-public class FXDealReport {
+public class FXDealReportModel {
 
     private String deal_unique_id;
     private String ordering_currency_iso_code;
@@ -8,7 +8,7 @@ public class FXDealReport {
     private String timestamp;
     private String deal_amount;
 
-    public FXDealReport(String deal_unique_id, String ordering_currency_iso_code, String to_currency_iso_code, String timestamp, String deal_amount) {
+    public FXDealReportModel(String deal_unique_id, String ordering_currency_iso_code, String to_currency_iso_code, String timestamp, String deal_amount) {
         this.deal_unique_id = deal_unique_id;
         this.ordering_currency_iso_code = ordering_currency_iso_code;
         this.to_currency_iso_code = to_currency_iso_code;

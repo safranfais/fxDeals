@@ -1,4 +1,4 @@
-package com.bloomberg.deals.fxDeals;
+package com.bloomberg.deals.fxDeals.controllers;
 
 import com.bloomberg.deals.fxDeals.CSVFileCreation.CSVUtils;
 import com.bloomberg.deals.fxDeals.constants.ConstantsFields;
@@ -31,14 +31,14 @@ public class FxDealController {
     public String fxFileUpload(@RequestParam("fxfile") MultipartFile file, RedirectAttributes redirectAttributes) {
 
         if (file.isEmpty()) {
-            LOGGER.debug("There is no file was uploaded : " + file.getOriginalFilename());
+            LOGGER.debug("There is no file was uploaded!!!");
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
             return "redirect:uploadStatus";
         }
 
         try {
 
-            LOGGER.debug("Uploaded file [ " + file.getOriginalFilename() + " ] start to read");
+            LOGGER.debug("Uploaded file [ " + file.getOriginalFilename() + " ] is start to read");
 
             if (CSVUtils.fileType(file).equals(ConstantsFields.CSV)) {
                 byte[] bytes = file.getBytes();
