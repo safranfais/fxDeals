@@ -1,9 +1,8 @@
-package com.bloomberg.deals.fxDeals.CSVFileCreation;
+package com.bloomberg.deals.fxDeals.utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class CSVFileWriter {
     private static final char DEFAULT_SEPARATOR = ',';

@@ -1,6 +1,6 @@
 package com.bloomberg.deals.fxDeals.controllers;
 
-import com.bloomberg.deals.fxDeals.CSVFileCreation.CSVUtils;
+import com.bloomberg.deals.fxDeals.utils.CSVUtils;
 import com.bloomberg.deals.fxDeals.constants.ConstantsFields;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

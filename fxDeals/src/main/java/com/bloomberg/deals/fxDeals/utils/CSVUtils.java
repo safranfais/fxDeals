@@ -1,4 +1,4 @@
-package com.bloomberg.deals.fxDeals.CSVFileCreation;
+package com.bloomberg.deals.fxDeals.utils;
 
 import org.springframework.web.multipart.MultipartFile;
 
