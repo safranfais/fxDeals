@@ -1,19 +1,39 @@
-package com.bloomberg.deals.fxDeals.models;
+package com.bloomberg.deals.fxDeals.entity;
 
-public class FXDealReportModel {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "fxdeal_data_warehouse", schema = "fxdeal")
+public class FXDealDataWarehouse {
+
+    @Id
+    @Column(name = "fxdeal_id")
     private String deal_unique_id;
+
+    @Column(name = "ordering_currency_iso_code")
     private String ordering_currency_iso_code;
+
+    @Column(name = "to_currency_iso_code")
     private String to_currency_iso_code;
+
+    @Column(name = "timestamp")
     private String timestamp;
+
+    @Column(name = "deal_amount")
     private String deal_amount;
 
-    public FXDealReportModel(String deal_unique_id, String ordering_currency_iso_code, String to_currency_iso_code, String timestamp, String deal_amount) {
-        this.deal_unique_id = deal_unique_id;
-        this.ordering_currency_iso_code = ordering_currency_iso_code;
-        this.to_currency_iso_code = to_currency_iso_code;
-        this.timestamp = timestamp;
-        this.deal_amount = deal_amount;
+    @Column(name = "is_active")
+    int isActive;
+
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 
     public String getDeal_unique_id() {

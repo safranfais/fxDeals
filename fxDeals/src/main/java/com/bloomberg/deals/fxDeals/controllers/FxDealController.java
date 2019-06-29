@@ -1,7 +1,7 @@
 package com.bloomberg.deals.fxDeals.controllers;
 
 import com.bloomberg.deals.fxDeals.utils.CSVUtils;
-import com.bloomberg.deals.fxDeals.constants.ConstantsFields;
+import com.bloomberg.deals.fxDeals.utils.Constants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -40,15 +40,15 @@ public class FxDealController {
 
             LOGGER.debug("Uploaded file [ " + file.getOriginalFilename() + " ] is start to read");
 
-            if (CSVUtils.fileType(file).equals(ConstantsFields.CSV)) {
+            if (CSVUtils.fileType(file).equals(Constants.CSV)) {
                 byte[] bytes = file.getBytes();
                 ByteArrayInputStream inputFileStream = new ByteArrayInputStream(bytes);
-                BufferedReader br = new BufferedReader(new InputStreamReader(inputFileStream));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputFileStream));
                 String line = "";
-                while ((line = br.readLine()) != null) {
+                while ((line = bufferedReader.readLine()) != null) {
                     LOGGER.debug("Read data line : [ " + line + " ] ");
                 }
-                br.close();
+                bufferedReader.close();
                 redirectAttributes.addFlashAttribute("message", "Successfully uploaded Your File : [ " + file.getOriginalFilename() + "]");
             } else {
                 LOGGER.debug("Do not process the none csv file format [ " + file.getOriginalFilename() + " ] ");
