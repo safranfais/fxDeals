@@ -1,67 +1,124 @@
 package com.bloomberg.deals.fxDeals.utils;
 
+import com.bloomberg.deals.fxDeals.models.FxDealDataWarehouseModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Currency;
+import java.util.*;
 
 public class ValidatingModel {
 
     private static final Logger LOGGER = LogManager.getLogger(ValidatingModel.class);
 
+    public static FxDealDataWarehouseModel ValidateObject(String fxDealData) {
+
+        ValidatingModel validate = new ValidatingModel();
+        FxDealDataWarehouseModel fxDealDataWarehouseModel = new FxDealDataWarehouseModel();
+
+        String ar[] = fxDealData.split(",");
+
+
+        if (ar.length > 4 && validate.validatingDealId(ar[0].toString()) && validate.validatingISOCurrencyCode(ar[1].toString()) &&
+                validate.validatingISOCurrencyCode(ar[2].toString()) && validate.validatingDateFormat(ar[3].toString()) && validate.validatingDealAmount(ar[4].toString())) {
+            LOGGER.debug("Valid Data add to the FxDealDataWarehouseModel");
+            fxDealDataWarehouseModel.setDeal_unique_id(ar[0].toString());
+            fxDealDataWarehouseModel.setOrdering_currency_iso_code(ar[1].toString());
+            fxDealDataWarehouseModel.setTo_currency_iso_code(ar[2].toString());
+            fxDealDataWarehouseModel.setTimestamp(ar[3].toString());
+            fxDealDataWarehouseModel.setDeal_amount(ar[4].toString());
+            fxDealDataWarehouseModel.setIsActive(1);
+
+        } else if (ar.length < 5) {
+            LOGGER.debug("Invalid Data add to the FxDealDataWarehouseModel, missing and empty data to add the 'null' value ");
+            ArrayList<String> list = new ArrayList( Arrays.asList( ar ) );
+            for(int i = (5 - list.size()) ; i > 0 ; i--){
+                list.add("null");
+            }
+            ar = list.stream().toArray(String[]::new);
+
+            fxDealDataWarehouseModel.setDeal_unique_id(ar[0].toString().equals("") ? "null" : ar[0].toString());
+            fxDealDataWarehouseModel.setOrdering_currency_iso_code(ar[1].toString().equals("") ? "null" : ar[1].toString());
+            fxDealDataWarehouseModel.setTo_currency_iso_code(ar[2].toString().equals("") ? "null" : ar[2].toString());
+            fxDealDataWarehouseModel.setTimestamp(ar[3].toString().equals("") ? "null" : ar[3].toString());
+            fxDealDataWarehouseModel.setDeal_amount(ar[4].toString().equals("") ? "null" : ar[4].toString());
+            fxDealDataWarehouseModel.setIsActive(0);
+
+        } else {
+            LOGGER.debug("Invalid Data add to the FxDealDataWarehouseModel and add the 'null' value to empty values");
+            fxDealDataWarehouseModel.setDeal_unique_id(ar[0].toString().equals("") ? "null" : ar[0].toString());
+            fxDealDataWarehouseModel.setOrdering_currency_iso_code(ar[1].toString().equals("") ? "null" : ar[1].toString());
+            fxDealDataWarehouseModel.setTo_currency_iso_code(ar[2].toString().equals("") ? "null" : ar[2].toString());
+            fxDealDataWarehouseModel.setTimestamp(ar[3].toString().equals("") ? "null" : ar[3].toString());
+            fxDealDataWarehouseModel.setDeal_amount(ar[4].toString().equals("") ? "null" : ar[4].toString());
+            fxDealDataWarehouseModel.setIsActive(0);
+        }
+        return fxDealDataWarehouseModel;
+    }
+
     boolean validatingDealId(String fxDealId) {
+        String fx_deal_id1 = fxDealId.substring(0, 3);
+        String fx_deal_id2 = fxDealId.substring(3);
         LOGGER.debug("checking fx deal id : " + fxDealId);
         try {
-            if (fxDealId.substring(0, 3).equals(Constants.FX_ID)) {
-                LOGGER.debug("fx deal id first part is valid : " + fxDealId.substring(0, 3));
+            if (fx_deal_id1.equals(Constants.FX_ID)) {
+                LOGGER.debug("fx deal id first part is valid : " + fx_deal_id1);
 
-                Double.parseDouble(fxDealId.substring(3));
-                LOGGER.debug("fx deal id second part is valid : " + fxDealId.substring(3));
+                Double.parseDouble(fx_deal_id2);
+                LOGGER.debug("fx deal id second part is valid : " + fx_deal_id2);
 
                 return true;
             } else {
-                LOGGER.debug("fx deal id first part is invalid : " + fxDealId.substring(0, 3));
+                LOGGER.debug("fx deal id first part is invalid : " + fx_deal_id1);
 
-                Double.parseDouble(fxDealId.substring(3));
-                LOGGER.debug("fx deal id second part is valid : " + fxDealId.substring(3));
+                Double.parseDouble(fx_deal_id2);
+                LOGGER.debug("fx deal id second part is valid : " + fx_deal_id2);
 
                 return false;
             }
 
         } catch (NumberFormatException e) {
-            LOGGER.debug("fx deal id second part is invalid : " + fxDealId.substring(3));
-            System.out.println("error "+e);
+            LOGGER.error("fx deal id second part is invalid : " + fxDealId.substring(3));
             return false;
         }
     }
 
-    boolean validatingISOCurrencyCode(String currentIsoCode){
+    boolean validatingISOCurrencyCode(String currentIsoCode) {
         LOGGER.debug("checking ISO Currency code : " + currentIsoCode);
-        try{
+        try {
             Currency.getInstance(currentIsoCode).getCurrencyCode();
             LOGGER.debug("ISO Currency code is Valid : " + currentIsoCode);
             return true;
-        }catch(IllegalArgumentException e){
-            LOGGER.debug("ISO Currency code is Invalid : " + currentIsoCode);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("ISO Currency code is Invalid : " + currentIsoCode);
             return false;
         }
 
     }
 
-    boolean validatingDateFormat(){
-        return false;
-    }
+    boolean validatingDateFormat(String timestamp) {
 
-    boolean validatingDealAmount(String dealAmount){
-        try{
-            Double.parseDouble(dealAmount);
+        try {
+            Date date = new Date(Long.parseLong(timestamp));
+            LOGGER.debug("Timestamp is Valid : " + date.toString());
             return true;
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
+            LOGGER.error("Timestamp is Invalid : [ " + timestamp + " ]");
+            return false;
+        }
+
+    }
+
+    boolean validatingDealAmount(String dealAmount) {
+        try {
+            Double.parseDouble(dealAmount);
+            LOGGER.debug("Deal amount is Valid : " + dealAmount);
+            return true;
+        } catch (NumberFormatException e) {
+            LOGGER.error("Deal amount is Invalid : " + dealAmount);
             return false;
         }
     }
 
-    public static void main(String[] args) {
 
-    }
+
 }

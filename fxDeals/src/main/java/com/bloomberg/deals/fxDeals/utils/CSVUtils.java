@@ -9,7 +9,7 @@ import java.util.List;
 public class CSVUtils {
     private static final char DEFAULT_SEPARATOR = ',';
 
-    public static void writeLine(Writer w, List<String> values, char separators, char customQuote) throws IOException {
+    public static void writeLine(Writer w, List<Object> values, char separators, char customQuote) throws IOException {
         boolean first = true;
 
         //default customQuote is empty
@@ -17,14 +17,14 @@ public class CSVUtils {
             separators = DEFAULT_SEPARATOR;
         }
         StringBuilder sb = new StringBuilder();
-        for (String value : values) {
+        for (Object value : values) {
             if (!first) {
                 sb.append(separators);
             }
             if (customQuote == ' ') {
-                sb.append(followCVSformat(value));
+                sb.append(followCVSformat(value.toString()));
             } else {
-                sb.append(customQuote).append(followCVSformat(value)).append(customQuote);
+                sb.append(customQuote).append(followCVSformat(value.toString())).append(customQuote);
             }
 
             first = false;

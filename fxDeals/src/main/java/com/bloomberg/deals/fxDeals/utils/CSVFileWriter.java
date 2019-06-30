@@ -17,15 +17,15 @@ public class CSVFileWriter {
             if(i%100==0){
                 CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, "$", "", "error date", ""), DEFAULT_SEPARATOR, ' ');
             }else if (i >= 0 && i <= 10500) {
-                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("INR").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "40"), DEFAULT_SEPARATOR, ' ');
+                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("INR").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().getTime(), "40"), DEFAULT_SEPARATOR, ' ');
             } else if (i >= 10501 && i <= 35000) {
-                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("RUB").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "55"), DEFAULT_SEPARATOR, ' ');
+                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("RUB").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().getTime(), "55"), DEFAULT_SEPARATOR, ' ');
             } else if (i >= 35001 && i <= 57000) {
-                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("CNY").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "70"), DEFAULT_SEPARATOR, ' ');
+                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("CNY").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().getTime(), "70"), DEFAULT_SEPARATOR, ' ');
             } else if (i >= 57001 && i <= 83000) {
-                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("GBP").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "65"), DEFAULT_SEPARATOR, ' ');
+                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("GBP").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().getTime(), "65"), DEFAULT_SEPARATOR, ' ');
             } else {
-                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("LKR").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().toString(), "65"), DEFAULT_SEPARATOR, ' ');
+                CSVUtils.writeLine(writer, Arrays.asList("FX_" + i, Currency.getInstance("LKR").getCurrencyCode(), Currency.getInstance("USD").getCurrencyCode(), new Date().getTime(), "65"), DEFAULT_SEPARATOR, ' ');
             }
         }
         writer.flush();
