@@ -1,7 +1,10 @@
 package com.bloomberg.deals.fxDeals.controllers;
 
 import com.bloomberg.deals.fxDeals.entity.FXDeal;
+import com.bloomberg.deals.fxDeals.entity.IFXDeal;
+import com.bloomberg.deals.fxDeals.entity.InvalidFXDeal;
 import com.bloomberg.deals.fxDeals.repository.FxDealRepository;
+import com.bloomberg.deals.fxDeals.repository.InvalidFxDealRepository;
 import com.bloomberg.deals.fxDeals.utils.CSVUtils;
 import com.bloomberg.deals.fxDeals.utils.Constants;
 import com.bloomberg.deals.fxDeals.utils.ValidatingModel;
@@ -13,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +27,10 @@ public class FxDealController {
     private static final Logger LOGGER = LogManager.getLogger(FxDealController.class);
 
     @Autowired
-    private FxDealRepository fxDealRepository ;
+    private FxDealRepository fxDealRepository;
+
+    @Autowired
+    private InvalidFxDealRepository invalidFxDealRepository;
 
 
     public static final String NAME = "Fx Deal File Uploading ";
@@ -52,27 +59,27 @@ public class FxDealController {
                 ByteArrayInputStream inputFileStream = new ByteArrayInputStream(bytes);
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputFileStream));
 
-                List<FXDeal> fxDealDataWarehouseModels = new ArrayList<>();
-                List<FXDeal> invalidFxDealDataWarehouseModels = new ArrayList<>();
+                List<FXDeal> fxDealData = new ArrayList<>();
+                List<InvalidFXDeal> invalidFxDealData = new ArrayList<>();
 
                 String fxData = "";
                 while ((fxData = bufferedReader.readLine()) != null) {
                     LOGGER.debug("Read data line : [ " + fxData + " ] ");
-                    FXDeal result = ValidatingModel.ValidateObject(fxData);
+                    IFXDeal result = ValidatingModel.ValidateObject(fxData);
                     if (result.getIsActive() == 1) {
-                        fxDealDataWarehouseModels.add(result);
+                        fxDealData.add((FXDeal) result);
                     } else if (fxData.split(",")[0].toString().equals("Deal Unique Id")) {
 
                     } else {
                         result.setIsActive(1);
-                        invalidFxDealDataWarehouseModels.add(result);
+                        invalidFxDealData.add((InvalidFXDeal) result);
                     }
                 }
 
                 LOGGER.debug("Saving Valid Data to Database");
-                fxDealRepository.saveAll(fxDealDataWarehouseModels);
+                fxDealRepository.saveAll(fxDealData);
                 LOGGER.debug("Saving Invalid Data to Database");
-                fxDealRepository.saveAll(invalidFxDealDataWarehouseModels);
+                invalidFxDealRepository.saveAll(invalidFxDealData);
                 LOGGER.debug("Valid and Invalid Saved Succesfully");
 
                 bufferedReader.close();
@@ -89,7 +96,6 @@ public class FxDealController {
 
         return "redirect:/uploadStatus";
     }
-
 
 
     @GetMapping("/uploadStatus")

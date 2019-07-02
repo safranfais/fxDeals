@@ -1,6 +1,8 @@
 package com.bloomberg.deals.fxDeals.utils;
 
 import com.bloomberg.deals.fxDeals.entity.FXDeal;
+import com.bloomberg.deals.fxDeals.entity.IFXDeal;
+import com.bloomberg.deals.fxDeals.entity.InvalidFXDeal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,17 +12,17 @@ public class ValidatingModel {
 
     private static final Logger LOGGER = LogManager.getLogger(ValidatingModel.class);
 
-    public static FXDeal ValidateObject(String fxDealData) {
+    public static IFXDeal ValidateObject(String fxDealData) {
 
         ValidatingModel validate = new ValidatingModel();
-        FXDeal fxDealModel = new FXDeal();
+        IFXDeal fxDealModel =null ;
 
         String ar[] = fxDealData.split(",");
-
 
         if (ar.length > 4 && validate.validatingDealId(ar[0].toString()) && validate.validatingISOCurrencyCode(ar[1].toString()) &&
                 validate.validatingISOCurrencyCode(ar[2].toString()) && validate.validatingDateFormat(ar[3].toString()) && validate.validatingDealAmount(ar[4].toString())) {
             LOGGER.debug("Valid Data add to the FxDealDataWarehouseModel");
+            fxDealModel = new FXDeal();
             fxDealModel.setDeal_unique_id(ar[0].toString());
             fxDealModel.setOrdering_currency_iso_code(ar[1].toString());
             fxDealModel.setTo_currency_iso_code(ar[2].toString());
@@ -29,6 +31,7 @@ public class ValidatingModel {
             fxDealModel.setIsActive(1);
 
         } else if (ar.length < 5) {
+            fxDealModel = new InvalidFXDeal();
             LOGGER.debug("Invalid Data add to the FxDealDataWarehouseModel, missing and empty data to add the 'null' value ");
             ArrayList<String> list = new ArrayList( Arrays.asList( ar ) );
             for(int i = (5 - list.size()) ; i > 0 ; i--){
@@ -44,6 +47,7 @@ public class ValidatingModel {
             fxDealModel.setIsActive(0);
 
         } else {
+            fxDealModel = new InvalidFXDeal();
             LOGGER.debug("Invalid Data add to the FxDealDataWarehouseModel and add the 'null' value to empty values");
             fxDealModel.setDeal_unique_id(ar[0].toString().equals("") ? "null" : ar[0].toString());
             fxDealModel.setOrdering_currency_iso_code(ar[1].toString().equals("") ? "null" : ar[1].toString());

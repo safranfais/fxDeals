@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class InvalidFXDeal {
+public class InvalidFXDeal implements IFXDeal {
 
     @Id
     private String deal_unique_id;
