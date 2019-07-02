@@ -1,7 +1,9 @@
 package com.bloomberg.deals.fxDeals.repository;
 
-import com.bloomberg.deals.fxDeals.entity.InvalidFXDealDataWarehouse;
+import com.bloomberg.deals.fxDeals.entity.InvalidFXDeal;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface InvalidFxDealRepository extends JpaRepository<InvalidFXDealDataWarehouse,String> {
+@Repository
+public interface InvalidFxDealRepository extends JpaRepository<InvalidFXDeal,String> {
 }

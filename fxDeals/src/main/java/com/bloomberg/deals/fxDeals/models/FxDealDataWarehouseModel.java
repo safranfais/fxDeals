@@ -1,6 +1,9 @@
 package com.bloomberg.deals.fxDeals.models;
 
+import javax.persistence.Entity;
+
 public class FxDealDataWarehouseModel {
+
 
     private String deal_unique_id;
     private String ordering_currency_iso_code;

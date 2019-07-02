@@ -1,6 +1,6 @@
 package com.bloomberg.deals.fxDeals.controllers;
 
-import com.bloomberg.deals.fxDeals.models.FxDealDataWarehouseModel;
+import com.bloomberg.deals.fxDeals.entity.FXDeal;
 import com.bloomberg.deals.fxDeals.repository.FxDealRepository;
 import com.bloomberg.deals.fxDeals.utils.CSVUtils;
 import com.bloomberg.deals.fxDeals.utils.Constants;
@@ -52,13 +52,13 @@ public class FxDealController {
                 ByteArrayInputStream inputFileStream = new ByteArrayInputStream(bytes);
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputFileStream));
 
-                List<FxDealDataWarehouseModel> fxDealDataWarehouseModels = new ArrayList<>();
-                List<FxDealDataWarehouseModel> invalidFxDealDataWarehouseModels = new ArrayList<>();
+                List<FXDeal> fxDealDataWarehouseModels = new ArrayList<>();
+                List<FXDeal> invalidFxDealDataWarehouseModels = new ArrayList<>();
 
                 String fxData = "";
                 while ((fxData = bufferedReader.readLine()) != null) {
                     LOGGER.debug("Read data line : [ " + fxData + " ] ");
-                    FxDealDataWarehouseModel result = ValidatingModel.ValidateObject(fxData);
+                    FXDeal result = ValidatingModel.ValidateObject(fxData);
                     if (result.getIsActive() == 1) {
                         fxDealDataWarehouseModels.add(result);
                     } else if (fxData.split(",")[0].toString().equals("Deal Unique Id")) {
@@ -69,7 +69,11 @@ public class FxDealController {
                     }
                 }
 
-//                fxDealRepository.save(fxDealDataWarehouseModels);
+                LOGGER.debug("Saving Valid Data to Database");
+                fxDealRepository.saveAll(fxDealDataWarehouseModels);
+                LOGGER.debug("Saving Invalid Data to Database");
+                fxDealRepository.saveAll(invalidFxDealDataWarehouseModels);
+                LOGGER.debug("Valid and Invalid Saved Succesfully");
 
                 bufferedReader.close();
                 redirectAttributes.addFlashAttribute("message", "Successfully uploaded Your File : [ " + file.getOriginalFilename() + "]");

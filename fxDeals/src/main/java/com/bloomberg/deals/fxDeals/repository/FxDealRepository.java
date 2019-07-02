@@ -1,7 +1,9 @@
 package com.bloomberg.deals.fxDeals.repository;
 
-import com.bloomberg.deals.fxDeals.entity.FXDealDataWarehouse;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.bloomberg.deals.fxDeals.entity.FXDeal;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface FxDealRepository extends JpaRepository<FXDealDataWarehouse,String> {
+@Repository
+public interface FxDealRepository extends CrudRepository<FXDeal,String> {
 }

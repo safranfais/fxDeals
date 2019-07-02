@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class FXDealDataWarehouse {
+public class InvalidFXDeal {
 
     @Id
     private String deal_unique_id;
@@ -13,14 +13,6 @@ public class FXDealDataWarehouse {
     private String timestamp;
     private String deal_amount;
     int isActive;
-
-    public int getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(int isActive) {
-        this.isActive = isActive;
-    }
 
     public String getDeal_unique_id() {
         return deal_unique_id;
@@ -60,5 +52,13 @@ public class FXDealDataWarehouse {
 
     public void setDeal_amount(String deal_amount) {
         this.deal_amount = deal_amount;
+    }
+
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
     }
 }

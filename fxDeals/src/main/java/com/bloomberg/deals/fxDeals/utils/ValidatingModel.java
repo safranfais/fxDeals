@@ -1,6 +1,6 @@
 package com.bloomberg.deals.fxDeals.utils;
 
-import com.bloomberg.deals.fxDeals.models.FxDealDataWarehouseModel;
+import com.bloomberg.deals.fxDeals.entity.FXDeal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,10 +10,10 @@ public class ValidatingModel {
 
     private static final Logger LOGGER = LogManager.getLogger(ValidatingModel.class);
 
-    public static FxDealDataWarehouseModel ValidateObject(String fxDealData) {
+    public static FXDeal ValidateObject(String fxDealData) {
 
         ValidatingModel validate = new ValidatingModel();
-        FxDealDataWarehouseModel fxDealDataWarehouseModel = new FxDealDataWarehouseModel();
+        FXDeal fxDealModel = new FXDeal();
 
         String ar[] = fxDealData.split(",");
 
@@ -21,12 +21,12 @@ public class ValidatingModel {
         if (ar.length > 4 && validate.validatingDealId(ar[0].toString()) && validate.validatingISOCurrencyCode(ar[1].toString()) &&
                 validate.validatingISOCurrencyCode(ar[2].toString()) && validate.validatingDateFormat(ar[3].toString()) && validate.validatingDealAmount(ar[4].toString())) {
             LOGGER.debug("Valid Data add to the FxDealDataWarehouseModel");
-            fxDealDataWarehouseModel.setDeal_unique_id(ar[0].toString());
-            fxDealDataWarehouseModel.setOrdering_currency_iso_code(ar[1].toString());
-            fxDealDataWarehouseModel.setTo_currency_iso_code(ar[2].toString());
-            fxDealDataWarehouseModel.setTimestamp(ar[3].toString());
-            fxDealDataWarehouseModel.setDeal_amount(ar[4].toString());
-            fxDealDataWarehouseModel.setIsActive(1);
+            fxDealModel.setDeal_unique_id(ar[0].toString());
+            fxDealModel.setOrdering_currency_iso_code(ar[1].toString());
+            fxDealModel.setTo_currency_iso_code(ar[2].toString());
+            fxDealModel.setTimestamp(ar[3].toString());
+            fxDealModel.setDeal_amount(ar[4].toString());
+            fxDealModel.setIsActive(1);
 
         } else if (ar.length < 5) {
             LOGGER.debug("Invalid Data add to the FxDealDataWarehouseModel, missing and empty data to add the 'null' value ");
@@ -36,23 +36,23 @@ public class ValidatingModel {
             }
             ar = list.stream().toArray(String[]::new);
 
-            fxDealDataWarehouseModel.setDeal_unique_id(ar[0].toString().equals("") ? "null" : ar[0].toString());
-            fxDealDataWarehouseModel.setOrdering_currency_iso_code(ar[1].toString().equals("") ? "null" : ar[1].toString());
-            fxDealDataWarehouseModel.setTo_currency_iso_code(ar[2].toString().equals("") ? "null" : ar[2].toString());
-            fxDealDataWarehouseModel.setTimestamp(ar[3].toString().equals("") ? "null" : ar[3].toString());
-            fxDealDataWarehouseModel.setDeal_amount(ar[4].toString().equals("") ? "null" : ar[4].toString());
-            fxDealDataWarehouseModel.setIsActive(0);
+            fxDealModel.setDeal_unique_id(ar[0].toString().equals("") ? "null" : ar[0].toString());
+            fxDealModel.setOrdering_currency_iso_code(ar[1].toString().equals("") ? "null" : ar[1].toString());
+            fxDealModel.setTo_currency_iso_code(ar[2].toString().equals("") ? "null" : ar[2].toString());
+            fxDealModel.setTimestamp(ar[3].toString().equals("") ? "null" : ar[3].toString());
+            fxDealModel.setDeal_amount(ar[4].toString().equals("") ? "null" : ar[4].toString());
+            fxDealModel.setIsActive(0);
 
         } else {
             LOGGER.debug("Invalid Data add to the FxDealDataWarehouseModel and add the 'null' value to empty values");
-            fxDealDataWarehouseModel.setDeal_unique_id(ar[0].toString().equals("") ? "null" : ar[0].toString());
-            fxDealDataWarehouseModel.setOrdering_currency_iso_code(ar[1].toString().equals("") ? "null" : ar[1].toString());
-            fxDealDataWarehouseModel.setTo_currency_iso_code(ar[2].toString().equals("") ? "null" : ar[2].toString());
-            fxDealDataWarehouseModel.setTimestamp(ar[3].toString().equals("") ? "null" : ar[3].toString());
-            fxDealDataWarehouseModel.setDeal_amount(ar[4].toString().equals("") ? "null" : ar[4].toString());
-            fxDealDataWarehouseModel.setIsActive(0);
+            fxDealModel.setDeal_unique_id(ar[0].toString().equals("") ? "null" : ar[0].toString());
+            fxDealModel.setOrdering_currency_iso_code(ar[1].toString().equals("") ? "null" : ar[1].toString());
+            fxDealModel.setTo_currency_iso_code(ar[2].toString().equals("") ? "null" : ar[2].toString());
+            fxDealModel.setTimestamp(ar[3].toString().equals("") ? "null" : ar[3].toString());
+            fxDealModel.setDeal_amount(ar[4].toString().equals("") ? "null" : ar[4].toString());
+            fxDealModel.setIsActive(0);
         }
-        return fxDealDataWarehouseModel;
+        return fxDealModel;
     }
 
     boolean validatingDealId(String fxDealId) {
