@@ -61,16 +61,14 @@ public class FxDealController {
 
             String fileType = CSVUtils.fileType(file);
             FileCheck addedFiles = fileCheckService.findByFileName(file.getOriginalFilename());
+            List<FXDeal> fxDealData = new ArrayList<>();
+            List<InvalidFXDeal> invalidFxDealData = new ArrayList<>();
 
             if (fileType.equals(Constants.CSV) && addedFiles == null) {
-                fileCheckService.addFileName(file.getOriginalFilename());
 
                 byte[] bytes = file.getBytes();
                 ByteArrayInputStream inputFileStream = new ByteArrayInputStream(bytes);
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputFileStream));
-
-                List<FXDeal> fxDealData = new ArrayList<>();
-                List<InvalidFXDeal> invalidFxDealData = new ArrayList<>();
 
                 String fxData = "";
                 while ((fxData = bufferedReader.readLine()) != null) {
@@ -86,6 +84,9 @@ public class FxDealController {
                     }
                 }
 
+                LOGGER.debug("Saving Upload File Details");
+                fileCheckService.addFileName(file.getOriginalFilename(), fxDealData.size(), invalidFxDealData.size());
+
                 LOGGER.debug("Saving Valid Data to Database");
                 fxDealRepository.saveAll(fxDealData);
                 LOGGER.debug("Saving Invalid Data to Database");
@@ -93,7 +94,8 @@ public class FxDealController {
                 LOGGER.debug("Valid and Invalid Saved Succesfully");
 
                 bufferedReader.close();
-                redirectAttributes.addFlashAttribute("message", "Successfully uploaded Your File : [ " + file.getOriginalFilename() + "]");
+                redirectAttributes.addFlashAttribute("message", "Successfully uploaded Your File : [ " + file.getOriginalFilename() + "]  Valid record : [" + fxDealData.size()
+                        + "] Invalid record : [" + invalidFxDealData.size() + "] Total record : [" + (fxDealData.size() + invalidFxDealData.size()) +" ]");
             } else {
                 if (addedFiles != null) {
                     LOGGER.debug("This file was already submitted [ " + file.getOriginalFilename() + " ] ");

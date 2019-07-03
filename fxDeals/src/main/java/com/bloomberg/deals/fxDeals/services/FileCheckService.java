@@ -18,9 +18,11 @@ public class FileCheckService {
         return (ArrayList<FileCheck>) fileCheckRepository.findAll();
     }
 
-    public FileCheck addFileName(String fileName){
+    public FileCheck addFileName(String fileName, int valid , int invalid){
         FileCheck addFileName = new FileCheck();
         addFileName.setFileName(fileName);
+        addFileName.setValidRecords(valid);
+        addFileName.setInvalidRecords(invalid);
         addFileName.setIsActive(1);
         return fileCheckRepository.save(addFileName);
     }
@@ -28,6 +30,9 @@ public class FileCheckService {
     public FileCheck findByFileName(String fileName){
         return fileCheckRepository.findByFileName(fileName);
     }
+
+
+
 
 
 
