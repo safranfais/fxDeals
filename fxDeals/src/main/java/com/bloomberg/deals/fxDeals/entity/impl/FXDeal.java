@@ -1,4 +1,6 @@
-package com.bloomberg.deals.fxDeals.entity;
+package com.bloomberg.deals.fxDeals.entity.impl;
+
+import com.bloomberg.deals.fxDeals.entity.IFXDeal;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,10 +14,19 @@ public class FXDeal implements IFXDeal {
     private String to_currency_iso_code;
     private String timestamp;
     private String deal_amount;
+    private String reference_source_name;
     int isActive;
 
     public int getIsActive() {
         return isActive;
+    }
+
+    public String getReference_source_name() {
+        return reference_source_name;
+    }
+
+    public void setReference_source_name(String reference_source_name) {
+        this.reference_source_name = reference_source_name;
     }
 
     public void setIsActive(int isActive) {

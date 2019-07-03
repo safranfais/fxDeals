@@ -1,10 +1,12 @@
 package com.bloomberg.deals.fxDeals.controllers;
 
-import com.bloomberg.deals.fxDeals.entity.FXDeal;
+import com.bloomberg.deals.fxDeals.entity.FileCheck;
+import com.bloomberg.deals.fxDeals.entity.impl.FXDeal;
 import com.bloomberg.deals.fxDeals.entity.IFXDeal;
-import com.bloomberg.deals.fxDeals.entity.InvalidFXDeal;
+import com.bloomberg.deals.fxDeals.entity.impl.InvalidFXDeal;
 import com.bloomberg.deals.fxDeals.repository.FxDealRepository;
 import com.bloomberg.deals.fxDeals.repository.InvalidFxDealRepository;
+import com.bloomberg.deals.fxDeals.services.FileCheckService;
 import com.bloomberg.deals.fxDeals.utils.CSVUtils;
 import com.bloomberg.deals.fxDeals.utils.Constants;
 import com.bloomberg.deals.fxDeals.utils.ValidatingModel;
@@ -32,6 +34,9 @@ public class FxDealController {
     @Autowired
     private InvalidFxDealRepository invalidFxDealRepository;
 
+    @Autowired
+    FileCheckService fileCheckService;
+
 
     public static final String NAME = "Fx Deal File Uploading ";
 
@@ -54,7 +59,12 @@ public class FxDealController {
 
             LOGGER.debug("Uploaded file [ " + file.getOriginalFilename() + " ] is start to read");
 
-            if (CSVUtils.fileType(file).equals(Constants.CSV)) {
+            String fileType = CSVUtils.fileType(file);
+            FileCheck addedFiles = fileCheckService.findByFileName(file.getOriginalFilename());
+
+            if (fileType.equals(Constants.CSV) && addedFiles == null) {
+                fileCheckService.addFileName(file.getOriginalFilename());
+
                 byte[] bytes = file.getBytes();
                 ByteArrayInputStream inputFileStream = new ByteArrayInputStream(bytes);
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputFileStream));
@@ -65,7 +75,7 @@ public class FxDealController {
                 String fxData = "";
                 while ((fxData = bufferedReader.readLine()) != null) {
                     LOGGER.debug("Read data line : [ " + fxData + " ] ");
-                    IFXDeal result = ValidatingModel.ValidateObject(fxData);
+                    IFXDeal result = ValidatingModel.ValidateObject(fxData, file.getOriginalFilename());
                     if (result.getIsActive() == 1) {
                         fxDealData.add((FXDeal) result);
                     } else if (fxData.split(",")[0].toString().equals("Deal Unique Id")) {
@@ -85,8 +95,13 @@ public class FxDealController {
                 bufferedReader.close();
                 redirectAttributes.addFlashAttribute("message", "Successfully uploaded Your File : [ " + file.getOriginalFilename() + "]");
             } else {
-                LOGGER.debug("Do not process the none csv file format [ " + file.getOriginalFilename() + " ] ");
-                redirectAttributes.addFlashAttribute("message", "Please Upload the csv file format : [ " + file.getOriginalFilename() + "]");
+                if (addedFiles != null) {
+                    LOGGER.debug("This file was already submitted [ " + file.getOriginalFilename() + " ] ");
+                    redirectAttributes.addFlashAttribute("message", "This File was already submitted, we are not process same file twice : [ " + file.getOriginalFilename() + "]");
+                } else {
+                    LOGGER.debug("Do not process the none csv file format [ " + file.getOriginalFilename() + " ] ");
+                    redirectAttributes.addFlashAttribute("message", "Please Upload the csv file format : [ " + file.getOriginalFilename() + "]");
+                }
             }
 
         } catch (IOException e) {

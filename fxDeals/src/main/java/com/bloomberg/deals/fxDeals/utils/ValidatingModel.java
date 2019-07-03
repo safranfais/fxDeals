@@ -1,8 +1,8 @@
 package com.bloomberg.deals.fxDeals.utils;
 
-import com.bloomberg.deals.fxDeals.entity.FXDeal;
+import com.bloomberg.deals.fxDeals.entity.impl.FXDeal;
 import com.bloomberg.deals.fxDeals.entity.IFXDeal;
-import com.bloomberg.deals.fxDeals.entity.InvalidFXDeal;
+import com.bloomberg.deals.fxDeals.entity.impl.InvalidFXDeal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,7 +12,7 @@ public class ValidatingModel {
 
     private static final Logger LOGGER = LogManager.getLogger(ValidatingModel.class);
 
-    public static IFXDeal ValidateObject(String fxDealData) {
+    public static IFXDeal ValidateObject(String fxDealData , String fileName) {
 
         ValidatingModel validate = new ValidatingModel();
         IFXDeal fxDealModel =null ;
@@ -28,10 +28,12 @@ public class ValidatingModel {
             fxDealModel.setTo_currency_iso_code(ar[2].toString());
             fxDealModel.setTimestamp(ar[3].toString());
             fxDealModel.setDeal_amount(ar[4].toString());
+            fxDealModel.setReference_source_name(fileName);
             fxDealModel.setIsActive(1);
 
         } else if (ar.length < 5) {
             fxDealModel = new InvalidFXDeal();
+
             LOGGER.debug("Invalid Data add to the FxDealDataWarehouseModel, missing and empty data to add the 'null' value ");
             ArrayList<String> list = new ArrayList( Arrays.asList( ar ) );
             for(int i = (5 - list.size()) ; i > 0 ; i--){
@@ -44,6 +46,7 @@ public class ValidatingModel {
             fxDealModel.setTo_currency_iso_code(ar[2].toString().equals("") ? "null" : ar[2].toString());
             fxDealModel.setTimestamp(ar[3].toString().equals("") ? "null" : ar[3].toString());
             fxDealModel.setDeal_amount(ar[4].toString().equals("") ? "null" : ar[4].toString());
+            fxDealModel.setReference_source_name(fileName);
             fxDealModel.setIsActive(0);
 
         } else {
@@ -54,6 +57,7 @@ public class ValidatingModel {
             fxDealModel.setTo_currency_iso_code(ar[2].toString().equals("") ? "null" : ar[2].toString());
             fxDealModel.setTimestamp(ar[3].toString().equals("") ? "null" : ar[3].toString());
             fxDealModel.setDeal_amount(ar[4].toString().equals("") ? "null" : ar[4].toString());
+            fxDealModel.setReference_source_name(fileName);
             fxDealModel.setIsActive(0);
         }
         return fxDealModel;

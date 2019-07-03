@@ -1,6 +1,6 @@
 package com.bloomberg.deals.fxDeals.repository;
 
-import com.bloomberg.deals.fxDeals.entity.InvalidFXDeal;
+import com.bloomberg.deals.fxDeals.entity.impl.InvalidFXDeal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

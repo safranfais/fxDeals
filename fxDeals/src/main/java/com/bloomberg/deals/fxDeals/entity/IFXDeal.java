@@ -15,4 +15,7 @@ public interface IFXDeal {
     void setTimestamp(String toString);
 
     void setDeal_amount(String toString);
+
+
+    void setReference_source_name(String fileName);
 }
