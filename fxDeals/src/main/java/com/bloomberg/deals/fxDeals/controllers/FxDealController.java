@@ -94,6 +94,8 @@ public class FxDealController {
                 LOGGER.debug("Valid and Invalid Saved Succesfully");
 
                 bufferedReader.close();
+                LOGGER.debug("Successfully uploaded Your File : [ " + file.getOriginalFilename() + "]  Valid record : [" + fxDealData.size()
+                        + "] Invalid record : [" + invalidFxDealData.size() + "] Total record : [" + (fxDealData.size() + invalidFxDealData.size()) +" ]");
                 redirectAttributes.addFlashAttribute("message", "Successfully uploaded Your File : [ " + file.getOriginalFilename() + "]  Valid record : [" + fxDealData.size()
                         + "] Invalid record : [" + invalidFxDealData.size() + "] Total record : [" + (fxDealData.size() + invalidFxDealData.size()) +" ]");
             } else {
